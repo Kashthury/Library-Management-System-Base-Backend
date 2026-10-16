@@ -1,0 +1,65 @@
+### Works with the IntelliJ HTTP client and the VS Code "REST Client" extension.
+@host = http://localhost:8080
+
+### 1. Register student  (201 Created)
+POST {{host}}/api/students
+Content-Type: application/json
+
+{ "studentName": "Nimal Perera", "age": 21, "gender": "M", "course": "Software Engineering" }
+
+### 2. All students
+GET {{host}}/api/students
+
+### 3. Student by id (404 "Student Not Found with id X" when missing)
+GET {{host}}/api/students/1
+
+### 4. Update student
+PUT {{host}}/api/students/1
+Content-Type: application/json
+
+{ "studentName": "Nimal Perera", "age": 22, "gender": "M", "course": "Computer Science" }
+
+### 5. Students by gender (M or F - anything else is 400)
+GET {{host}}/api/students/gender/M
+
+### 6. Register book
+POST {{host}}/api/books
+Content-Type: application/json
+
+{ "bookTitle": "Clean Code", "author": "Robert C. Martin", "category": "Programming", "availableQuantity": 10 }
+
+### 7. All books
+GET {{host}}/api/books
+
+### 8. Borrow (dates optional: borrowDate = today, dueDate = +14 days)
+POST {{host}}/api/borrow
+Content-Type: application/json
+
+{ "studentId": 1, "bookId": 1, "numberOfBooks": 2, "borrowDate": "2026-10-01", "dueDate": "2026-10-08" }
+
+### 9. Borrow records (what the Borrow/Return page loads)
+GET {{host}}/api/borrow
+
+### 10. Return - automatic fine (returnDate optional, default today)
+POST {{host}}/api/return
+Content-Type: application/json
+
+{ "studentId": 1, "bookId": 1, "numberOfBooks": 2, "returnDate": "2026-10-20" }
+
+### 11. Manual fine for N late days (stores the result on the student)
+POST {{host}}/api/students/1/fine
+Content-Type: application/json
+
+{ "lateDays": 10 }
+
+### 12. Pay (part of) a fine
+POST {{host}}/api/students/1/fine/pay
+Content-Type: application/json
+
+{ "amount": 100 }
+
+### 13. Library summary
+GET {{host}}/api/library/summary
+
+### 14. Delete student (409 while books are still borrowed)
+DELETE {{host}}/api/students/1
